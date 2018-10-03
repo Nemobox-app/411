@@ -127,6 +127,34 @@ $config['elasticsearch'] = [
 ];
 
 /**
+ * Email
+ *
+ * Configure for alternative email alerting functionality.
+ */
+$config['email'] = [
+    # Engine can be 'sendmail', 'phpmailer', 'database', log', or 'none'
+    # 'sendmail' uses the sendmail functionality on the 411 server
+    # 'phpmailer' sends email using SMTP through a separate server
+    # 'log' appends messages to a logfile without sending
+    # 'none' does not attempt to send messages at all
+    'engine' => 'sendmail',
+
+    # sendmail settings
+    # *NONE*
+
+    # phpmailer settings
+    'smtp_server'   => 'smtp.host.com',
+    'smtp_username' => 'admin@admin.com',
+    'smtp_password' => 'your super strong password here',
+    'smtp_port'     => '587',
+
+    # logfile settings
+    'logpath' => '/home/411/logs/',
+    'logfile' => '411-alerts.log',
+];
+
+
+/**
  * Graphite
  *
  * Configure to allow querying Graphite.
@@ -141,6 +169,7 @@ $config['graphite'] = [
         'host' => null,
     ],
 ];
+
 
 /**
  * ThreatExchange
@@ -206,3 +235,4 @@ $config['slack'] = [
      */
     'icon' => null,
 ];
+
