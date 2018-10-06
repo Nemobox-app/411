@@ -126,12 +126,30 @@ $config['elasticsearch'] = [
     ],
 ];
 
+
 /**
- * Email
+ * Graphite
  *
- * Configure for alternative email alerting functionality.
+ * Configure to allow querying Graphite.
  */
-$config['email'] = [
+$config['graphite'] = [
+    /**
+     * Each entry in this array represents a Graphite source that 411 can query.
+     *
+     * 'host': The hostname for your Graphite instance.
+     */
+    'graphite' => [
+        'host' => null,
+    ],
+];
+
+
+/**
+ * Notification
+ *
+ * Configure to set how alerts are sent.
+ */
+$config['notification'] = [
     # Engine can be 'sendmail', 'phpmailer', 'database', log', or 'none'
     # 'sendmail' uses the sendmail functionality on the 411 server
     # 'phpmailer' sends email using SMTP through a separate server
@@ -151,23 +169,6 @@ $config['email'] = [
     # logfile settings
     'logpath' => '/home/411/logs/',
     'logfile' => '411-alerts.log',
-];
-
-
-/**
- * Graphite
- *
- * Configure to allow querying Graphite.
- */
-$config['graphite'] = [
-    /**
-     * Each entry in this array represents a Graphite source that 411 can query.
-     *
-     * 'host': The hostname for your Graphite instance.
-     */
-    'graphite' => [
-        'host' => null,
-    ],
 ];
 
 
