@@ -149,7 +149,7 @@ $config['graphite'] = [
  *
  * Configure to set how alerts are sent.
  */
-$config['notification'] = [
+$config['notifications'] = [
     # Engine can be 'sendmail', 'phpmailer', 'database', log', or 'none'
     # 'sendmail' uses the sendmail functionality on the 411 server
     # 'phpmailer' sends email using SMTP through a separate server
@@ -161,16 +161,20 @@ $config['notification'] = [
     # *NONE*
 
     # phpmailer settings
-    'smtp_server'   => 'smtp.host.com',
-    'smtp_username' => 'admin@admin.com',
-    'smtp_password' => 'your super strong password here',
-    'smtp_port'     => '587',
-
+    'smtp' => [
+        'server'   => 'smtp.host.com',
+        'username' => 'smtpuser@gmail.com',
+        'password' => 'your super strong password here',
+        'port'     => '587',
+        'replyname'     => '411 Administrator',
+        'replyaddress'  => '411@alerts.com',
+    ],
     # logfile settings
-    'logpath' => '/home/411/logs/',
-    'logfile' => '411-alerts.log',
+    'log' => [
+        'path' => '/home/411/logs/',
+        'file' => '411-alerts.log',
+    ]
 ];
-
 
 /**
  * ThreatExchange

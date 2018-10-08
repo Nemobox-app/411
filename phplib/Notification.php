@@ -2,6 +2,9 @@
 
 namespace FOO;
 
+use FOO\NotifyToLog;
+use FOO\NotifyBySmtp;
+use FOO\NotifyBySendmail;
 /**
  * Class Notification
  * Generates and sends various email notifications.
@@ -402,11 +405,34 @@ class Notification {
         }
         $body.= $end;
 
-        mail(
-            $to[0],
-            sprintf('[%s] %s', Util::getSiteName(), $title),
-            $body,
-            $headers
-        );
+        $subject = sprintf('[%s] %s', Util::getSiteName(), $title);
+
+        $notify_config = Config::get('notifications');
+
+        # PHP native sendmail
+        if($notify_config['engine'] == 'sendmail') {
+            $notify = new NotifyBySendmail;
+            $notify->notify($to[0], $subject, $body, $headers);
+        }
+
+        # PHPMailer to send using SMTP
+        elseif ($notify_config['engine'] == 'smtp') {
+            $notify = new NotifyBySmtp;
+            $notify->replyname = $notify_config['smtp']['replyname'];
+            $notify->replyaddress = $notify_config['smtp']['replyaddress'];
+            $notify->smtpport = $notify_config['smtp']['port'];
+            $notify->smtphost = $notify_config['smtp']['server'];
+            $notify->username = $notify_config['smtp']['username'];
+            $notify->password = $notify_config['smtp']['password'];
+            $notify->notify();
+        }
+
+        # Save notification to Logfile
+        else {
+            $notify = new NotifyToLog;
+            $notify->logdir = $notify_config['log']['path'];
+            $notify->file   = $notify_config['log']['file'];
+            $notify->notify();
+        }
     }
 }
