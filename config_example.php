@@ -170,9 +170,13 @@ $config['notifications'] = [
         'replyaddress'  => '411@alerts.com',
     ],
     # logfile settings
+    # 'path name'
+    # 'file name'
+    # format can be 'html' or text
     'log' => [
         'path' => '/home/411/logs/',
         'file' => '411-alerts.log',
+        'format' => 'text',
     ]
 ];
 

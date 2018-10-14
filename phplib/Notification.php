@@ -409,6 +409,11 @@ class Notification {
 
         $notify_config = Config::get('notifications');
 
+        # Strip HTML from Body if specified
+        if($notify_config['format'] == 'text') {
+            $body = strip_tags($body);
+        }
+
         # PHP native sendmail
         if($notify_config['engine'] == 'sendmail') {
             $notify = new NotifyBySendmail;
@@ -424,15 +429,15 @@ class Notification {
             $notify->smtphost = $notify_config['smtp']['server'];
             $notify->username = $notify_config['smtp']['username'];
             $notify->password = $notify_config['smtp']['password'];
-            $notify->notify();
+            $notify->notify($to[0], $subject, $body, $headers);
         }
 
         # Save notification to Logfile
         else {
             $notify = new NotifyToLog;
-            $notify->logdir = $notify_config['log']['path'];
-            $notify->file   = $notify_config['log']['file'];
-            $notify->notify();
+            $notify->directory = $notify_config['log']['path'];
+            $notify->file = $notify_config['log']['file'];
+            $notify->notify($to[0], $subject, $body, $headers);
         }
     }
 }

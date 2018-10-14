@@ -3,15 +3,16 @@ namespace FOO;
 
 class NotifyToLog {
 
-    public $logdir;
-    public $logfile;
+    public $directory;
+    public $file;
 
     public function __construct()
     {
-        $this->config = Config::get('notification');
-        $this->logdir = $this->config['logpath'];
-        $this->logfile = $this->config['logfile'];
-        $this->LogToWrite = $this->logdir . DIRECTORY_SEPARATOR . $this->logfile;
+        // create empty file if it doesn't exist
+        $this->file = '411.log';
+        $this->directory = '/tmp';
+        $this->CreateLogFileIfNotExists();
+
     }
 
     public function __get($property) {
@@ -27,13 +28,18 @@ class NotifyToLog {
         return $this;
     }
 
+    private function CreateLogFileIfNotExists()
+    {
+        if(!is_file($this->directory . DIRECTORY_SEPARATOR . $this->file)){
+            file_put_contents($this->directory . DIRECTORY_SEPARATOR . $this->file, "Start of log");
+        }
+    }
 
-    public function notify($to, $from, $title, $message, $file = null)
+    public function notify($to, $subject, $message, $file = null)
     {
         $data  = 'Message To: ' . $to . PHP_EOL;
-        $data .= 'Message From: ' . $from . PHP_EOL;
-        $data .= 'Subject: ' . $title . PHP_EOL;
+        $data .= 'Subject: ' . $subject . PHP_EOL;
         $data .= 'Body: ' . $message . PHP_EOL;
-        return file_put_contents($this->logdir . DIRECTORY_SEPARATOR . $this->logfile, $data . PHP_EOL , FILE_APPEND | LOCK_EX);
+        return file_put_contents($this->directory . DIRECTORY_SEPARATOR . $this->file, $data . PHP_EOL , FILE_APPEND | LOCK_EX);
     }
 }
