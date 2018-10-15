@@ -411,6 +411,7 @@ class Notification {
 
         # Strip HTML from Body if specified
         if($notify_config['format'] == 'text') {
+            $body = str_replace(PHP_EOL . PHP_EOL, PHP_EOL, $body);
             $body = strip_tags($body);
         }
 
